@@ -22,3 +22,11 @@ body {
   border-style: groove;
   margin-top: 10px;
 }
+
+.current_weather {
+  margin-top: 10px;
+}
+
+#temp {
+  font-size: 30px;
+}
