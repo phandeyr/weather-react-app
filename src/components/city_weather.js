@@ -57,14 +57,30 @@ class CityWeather extends Component {
     if (option === 'date') {
       return `${days[weekday]}, ${date} ${months[month]} ${year}`
     } else {
-      return dateMS.getHours() + ':' + dateMS.getMinutes()
+      return dateMS.getHours() + ':' + this.padZero(dateMS.getMinutes())
     }
+  }
+
+  /**
+   * Pads the integer value with a zero if it is less than 10
+   * @param {int} value Value to check
+   */
+  padZero (value) {
+    return value < 10 ? `0${value}` : value
+  }
+
+  /**
+   * Accepts a string and returns it with the first letter capitialised
+   * @param {string} value String value to capitalise
+   */
+  capitaliseFirstLetter (value) {
+    return value.charAt(0).toUpperCase() + value.slice(1)
   }
 
   render () {
     if (this.state.isLoading) {
       return (
-        <div>
+        <div className='current_weather'>
           <Icon className='spinner icon' size='big'/><br/>
           <p>Loading</p>
         </div>
@@ -77,8 +93,9 @@ class CityWeather extends Component {
         <h3>{this.formatDateTime(current.dt, 'date')}</h3>
         <h1>{this.formatDateTime(current.dt, 'time')}</h1>
         <h3>{this.state.data.city}</h3>
-        <h4>{current.weather[0].main}</h4>
-        <p id='temp'>{this.convertKelvinToCelcius(current.temp)}&deg;C</p>
+        <p className='weather_text'>{this.capitaliseFirstLetter(current.weather[0].description)}</p>
+        <img alt='icon' src={`http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}/>
+        <p className='weather_text' id='temp'>{this.convertKelvinToCelcius(current.temp)}&deg;C</p>
       </div>
     )
   }
