@@ -7,9 +7,8 @@ import CityWeather from './city_weather.js'
 function App () {
   return (
     <div className='container'>
-      <Header/>
-
       <Router>
+        <Header/>
         <Switch>
           <Route exact path='/' component={CityList}/>
           <Route path='/weather/:city' component={CityWeather}/>
