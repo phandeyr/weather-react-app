@@ -27,6 +27,10 @@ h1, h3 {
   margin-top: 10px;
 }
 
+.ui.divided.list>.item {
+  padding:10px;
+}
+
 .current_weather {
   margin-top: 10px;
 }
@@ -37,4 +41,16 @@ h1, h3 {
 
 .weather_text {
   line-height: 0px !important;
+}
+
+.daily_weather_scrolling {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-top:40px;
+}
+
+.ui.card {
+  margin: 0px !important;
 }

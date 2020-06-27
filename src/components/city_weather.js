@@ -1,101 +1,33 @@
 import React, { Component } from 'react'
-import config from '../config.js'
-import { Icon } from 'semantic-ui-react'
+import CurrentWeather from './current_weather.js'
+import DailyWeather from './daily_weather.js'
+
 
 class CityWeather extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      isLoading: true,
-      data: props.location.state.data,
-      results: []
-    }
+    this.handleState = this.handleState.bind(this)
   }
 
-  componentDidMount () {
-    this.getWeather()
-  }
-
-  /**
-   * Invokes openweathermap api to retrieve weather results
-   */
-  getWeather () {
-    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.data.lat}&lon=${this.state.data.lon}&exclude=minutely&appid=${config.API_KEY}`)
-      .then(res => res.json())
-      .then((data) => {
-        this.setState({
-          results: data,
-          isLoading: false
-        })
-      })
-      .catch(console.log)
-  }
-
-  /**
-   * Converts temp from kelvin to celcius and returns it
-   * @param {int} temp Integer value to convert
-   */
-  convertKelvinToCelcius (temp) {
-    temp = temp - 273.15
-    return parseInt(temp)
-  }
-
-  /**
-   * Converts timestamp to date and returns the formatted date or time
-   * @param {int} timestamp
-   */
-  formatDateTime (timestamp, option) {
-    const days = ['Sunday', 'Monday', 'Tuesdy', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-
-    const dateMS = new Date(timestamp * 1000)
-    const weekday = dateMS.getDay()
-    const date = dateMS.getDate()
-    const month = dateMS.getMonth()
-    const year = dateMS.getFullYear()
-
-    if (option === 'date') {
-      return `${days[weekday]}, ${date} ${months[month]} ${year}`
-    } else {
-      return dateMS.getHours() + ':' + this.padZero(dateMS.getMinutes())
-    }
-  }
-
-  /**
-   * Pads the integer value with a zero if it is less than 10
-   * @param {int} value Value to check
-   */
-  padZero (value) {
-    return value < 10 ? `0${value}` : value
-  }
-
-  /**
-   * Accepts a string and returns it with the first letter capitialised
-   * @param {string} value String value to capitalise
-   */
-  capitaliseFirstLetter (value) {
-    return value.charAt(0).toUpperCase() + value.slice(1)
+  handleState (daily) {
+    this.setState({
+      daily: daily
+    })
   }
 
   render () {
-    if (this.state.isLoading) {
+    if (this.state !== null) {
       return (
-        <div className='current_weather'>
-          <Icon className='spinner icon' size='big'/><br/>
-          <p>Loading</p>
+        <div>
+          <CurrentWeather handleState={this.handleState} data={this.props.location.state.data} />
+          <DailyWeather daily={this.state.daily} />
         </div>
       )
     }
 
-    const current = this.state.results.current
     return (
-      <div className='current_weather'>
-        <h3>{this.formatDateTime(current.dt, 'date')}</h3>
-        <h1>{this.formatDateTime(current.dt, 'time')}</h1>
-        <h3>{this.state.data.city}</h3>
-        <p className='weather_text'>{this.capitaliseFirstLetter(current.weather[0].description)}</p>
-        <img alt='icon' src={`http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}/>
-        <p className='weather_text' id='temp'>{this.convertKelvinToCelcius(current.temp)}&deg;C</p>
+      <div>
+        <CurrentWeather handleState={this.handleState} data={this.props.location.state.data} />
       </div>
     )
   }
