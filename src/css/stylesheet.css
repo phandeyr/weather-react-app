@@ -22,7 +22,7 @@ h1, h3 {
   width: 50%;
   display: inline-block;
   text-align: left;
-  border-style: groove;
+  border: 1px solid;
   margin-top: 10px;
 }
 
@@ -49,9 +49,13 @@ h1, h3 {
 .daily_weather_scrolling {
   display: flex;
   flex-direction: row;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   margin-top:40px;
+  white-space: nowrap;
+  border: 1px solid #cccccc;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .ui.card {
